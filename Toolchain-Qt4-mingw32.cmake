@@ -19,19 +19,15 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # FindQt4.cmake asks native QMake for variables, which surely cannot work when
 # crosscompiling.
 set(MINGW_PREFIX        /usr/i486-mingw32)
-set(QT_BINARY_DIR       ${MINGW_PREFIX}/bin)
 set(QT_LIBRARY_DIR      ${MINGW_PREFIX}/lib)
-set(QT_QTCORE_LIBRARY   ${MINGW_PREFIX}/lib/libQtCore4.a)
 set(QT_MKSPECS_DIR      ${MINGW_PREFIX}/mkspecs)
-set(QT_MOC_EXECUTABLE   /usr/bin/moc)
-set(QT_QMAKE_EXECUTABLE /usr/bin/qmake)
-set(QT_UIC_EXECUTABLE   /usr/bin/uic)
-set(QT_RCC_EXECUTABLE   /usr/bin/rcc)
 
 # Modules
+set(QT_INCLUDE_DIR              ${MINGW_PREFIX}/include)
 set(QT_QTCORE_INCLUDE_DIR       ${MINGW_PREFIX}/include/QtCore)
 set(QT_QTGUI_INCLUDE_DIR        ${MINGW_PREFIX}/include/QtGui)
 set(QT_QTNETWORK_INCLUDE_DIR    ${MINGW_PREFIX}/include/QtNetwork)
 set(QT_QTWEBKIT_INCLUDE_DIR     ${MINGW_PREFIX}/include/QtWebKit)
 set(QT_QTSQL_INCLUDE_DIR        ${MINGW_PREFIX}/include/QtSql)
 set(QT_QTXML_INCLUDE_DIR        ${MINGW_PREFIX}/include/QtXml)
+set(QT_PHONON_INCLUDE_DIR       ${MINGW_PREFIX}/include/phonon)
