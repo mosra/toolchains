@@ -1,3 +1,12 @@
+#
+# Toolchain for crosscompiling Qt4 application for Windows on ArchLinux.
+#
+# Minimal dependencies:
+#
+#     mingw32-gcc
+#     mingw32-qt
+#
+
 # Target system name
 SET(CMAKE_SYSTEM_NAME   Windows)
 
