@@ -31,3 +31,11 @@ set(QT_QTWEBKIT_INCLUDE_DIR     ${MINGW_PREFIX}/include/QtWebKit)
 set(QT_QTSQL_INCLUDE_DIR        ${MINGW_PREFIX}/include/QtSql)
 set(QT_QTXML_INCLUDE_DIR        ${MINGW_PREFIX}/include/QtXml)
 set(QT_PHONON_INCLUDE_DIR       ${MINGW_PREFIX}/include/phonon)
+
+# Directories where to search for DLLs
+set(DLL_SEARCH_PATH
+    ${MINGW_PREFIX}/lib
+    ${MINGW_PREFIX}/bin
+    ${MINGW_PREFIX}/bin/qt-plugins
+    ${MINGW_PREFIX}/bin/qt-bin
+)
