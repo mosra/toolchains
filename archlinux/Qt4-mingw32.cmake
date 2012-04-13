@@ -46,6 +46,5 @@ set(QT_PHONON_INCLUDE_DIR       ${MINGW_PREFIX}/include/phonon)
 set(DLL_SEARCH_PATH
     ${MINGW_PREFIX}/lib
     ${MINGW_PREFIX}/bin
-    ${MINGW_PREFIX}/bin/qt-plugins
-    ${MINGW_PREFIX}/bin/qt-bin
+    ${MINGW_PREFIX}/bin/qt-plugins/plugins
 )
