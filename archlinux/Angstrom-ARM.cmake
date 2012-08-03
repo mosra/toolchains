@@ -13,3 +13,6 @@ SET(CMAKE_FIND_ROOT_PATH
 # Libraries and includes are in crosscompiler path
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
+
+# Set installation prefix
+set(CMAKE_INSTALL_PREFIX /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr)
