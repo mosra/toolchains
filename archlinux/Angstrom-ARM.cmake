@@ -7,6 +7,7 @@ SET(CMAKE_CXX_COMPILER  arm-angstrom-linux-gnueabi-g++)
 
 # Croscompiler paths
 SET(CMAKE_FIND_ROOT_PATH
+    /usr/local/angstrom/arm
     /usr/local/angstrom/arm/arm-angstrom-linux-gnueabi/usr
 )
 
