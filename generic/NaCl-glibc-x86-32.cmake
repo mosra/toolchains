@@ -1,9 +1,14 @@
 #
 # Toolchain for compiling NaCl applications for x86-32 using glibc.
 #
-# - Modify NACL_PREFIX to your liking
-# - Add `cmake/` directory to CMAKE_MODULE_PATH, so NaCl platform file is
-#   found
+# Modify NACL_PREFIX to your liking. You have to add modules/ directory to
+# CMAKE_MODULE_PATH before using the toolchain file so NaCl platform file
+# can be found, e.g.:
+#
+#  mkdir build-nacl-x86-32 && cd build-nacl-x86-32
+#  cmake .. \
+#       -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules \
+#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-glibc-x86-32.cmake
 #
 
 SET(CMAKE_SYSTEM_NAME NaCl)

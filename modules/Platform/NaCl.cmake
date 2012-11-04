@@ -1,3 +1,7 @@
+#
+# Platform file for generic/NaCl-*.cmake toolchains
+#
+
 set(CMAKE_C_OUTPUT_EXTENSION ".o")
 set(CMAKE_CXX_OUTPUT_EXTENSION ".o")
 set(CMAKE_EXECUTABLE_SUFFIX "-${NACL_ARCH_NMF}.nexe")
