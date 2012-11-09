@@ -10,4 +10,4 @@ set(CMAKE_C_FLAGS "${NACL_ARCH_GCC}")
 set(CMAKE_CXX_FLAGS "${CMAKE_C_COMPILER_FLAGS}")
 
 # TODO: Will this need -lpthread also?
-set(CMAKE_EXE_LINKER_FLAGS "-lppapi")
+set(CMAKE_EXE_LINKER_FLAGS "-lppapi_cpp -lppapi")
