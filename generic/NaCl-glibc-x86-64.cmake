@@ -11,7 +11,7 @@
 #       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-glibc-x86-64.cmake
 #
 
-SET(CMAKE_SYSTEM_NAME NaCl)
+set(CMAKE_SYSTEM_NAME NaCl)
 
 set(NACL_PREFIX "/usr/nacl")
 
