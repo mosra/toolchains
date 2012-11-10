@@ -14,3 +14,6 @@ set(CMAKE_PLATFORM_USES_PATH_WHEN_NO_SONAME 1)
 
 # TODO: Will this need -lpthread also?
 set(CMAKE_EXE_LINKER_FLAGS "-lppapi_cpp -lppapi")
+
+# So we have proper paths for finding stuff
+include(Platform/UnixPaths)
