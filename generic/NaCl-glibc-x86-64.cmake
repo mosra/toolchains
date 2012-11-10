@@ -13,7 +13,7 @@
 
 SET(CMAKE_SYSTEM_NAME NaCl)
 
-set(NACL_PREFIX "/home/mosra/Code/nacl/nacl_sdk/pepper_22")
+set(NACL_PREFIX "/usr/nacl")
 
 set(NACL_TOOLCHAIN glibc)
 set(NACL_ARCH x86_64)
