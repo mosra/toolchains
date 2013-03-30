@@ -1,6 +1,6 @@
 # - Macros for simplifying development with Google Chrome Native Client
 #
-# Find and install libraries for bundling with NaCl build.
+# Find and install libraries for bundling with NaCl glibc build.
 #  nacl_bundle_libs(library_install_dir
 #                   dlls...
 #                   [PATHS paths...])
@@ -14,6 +14,7 @@
 # See documentation of NaCl toolchains for more information.
 #
 
+if(NACL_TOOLCHAIN STREQUAL glibc)
 function(nacl_bundle_libs library_install_dir)
     # Get library and path lists
     foreach(arg ${ARGN})
@@ -52,3 +53,4 @@ function(nacl_bundle_libs library_install_dir)
         endif()
     endforeach()
 endfunction()
+endif()
