@@ -15,4 +15,3 @@ set(CMAKE_CXX_FLAGS "${CMAKE_C_FLAGS}")
 set(CMAKE_PLATFORM_USES_PATH_WHEN_NO_SONAME 1)
 
 # TODO: Will this need -lpthread also?
-set(CMAKE_EXE_LINKER_FLAGS "-lppapi_cpp -lppapi")
