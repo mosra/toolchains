@@ -8,7 +8,7 @@
 #  mkdir build-nacl-x86-32 && cd build-nacl-x86-32
 #  cmake .. \
 #       -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules \
-#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-glibc-x86-32.cmake
+#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-newlib-x86-32.cmake
 #
 
 set(CMAKE_SYSTEM_NAME NaCl)
