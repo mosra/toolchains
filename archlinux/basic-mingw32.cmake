@@ -7,16 +7,16 @@
 #
 
 # Target system name
-SET(CMAKE_SYSTEM_NAME   Windows)
+set(CMAKE_SYSTEM_NAME   Windows)
 
 # Compilers and utilities
-SET(CMAKE_C_COMPILER    i486-mingw32-gcc)
-SET(CMAKE_CXX_COMPILER  i486-mingw32-g++)
-SET(CMAKE_STRIP         i486-mingw32-strip)
-SET(CMAKE_RC_COMPILER   i486-mingw32-windres)
+set(CMAKE_C_COMPILER    i486-mingw32-gcc)
+set(CMAKE_CXX_COMPILER  i486-mingw32-g++)
+set(CMAKE_STRIP         i486-mingw32-strip)
+set(CMAKE_RC_COMPILER   i486-mingw32-windres)
 
 # Croscompiler path
-SET(CMAKE_FIND_ROOT_PATH /usr/i486-mingw32)
+set(CMAKE_FIND_ROOT_PATH /usr/i486-mingw32)
 
 # Find executables in root path, libraries and includes are in crosscompiler
 # path
