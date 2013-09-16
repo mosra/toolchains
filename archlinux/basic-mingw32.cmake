@@ -29,11 +29,8 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-# FindQt4.cmake asks native QMake for variables, which surely cannot work when
-# crosscompiling.
-set(MINGW_PREFIX        /usr/i486-mingw32)
-
 # Directories where to search for DLLs
+set(MINGW_PREFIX        /usr/i486-mingw32)
 set(DLL_SEARCH_PATH
     ${MINGW_PREFIX}/lib
     ${MINGW_PREFIX}/bin
