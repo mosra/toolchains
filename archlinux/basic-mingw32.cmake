@@ -17,6 +17,12 @@ set(CMAKE_RC_COMPILER   i486-mingw32-windres)
 # Croscompiler path
 set(CMAKE_FIND_ROOT_PATH /usr/i486-mingw32)
 
+# This helps find_path(), otherwise it's not able to find e.g.
+# /usr/i486-mingw32/share/cmake/Corrade/. I don't know why it's needed when
+# there is already CMAKE_FIND_ROOT_PATH, but probably related to
+# http://public.kitware.com/Bug/view.php?id=14337
+set(CMAKE_PREFIX_PATH /usr/i486-mingw32)
+
 # Find executables in root path, libraries and includes are in crosscompiler
 # path
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
