@@ -12,7 +12,6 @@ set(CMAKE_SYSTEM_NAME   Windows)
 # Compilers and utilities
 set(CMAKE_C_COMPILER    i486-mingw32-gcc)
 set(CMAKE_CXX_COMPILER  i486-mingw32-g++)
-set(CMAKE_STRIP         i486-mingw32-strip)
 set(CMAKE_RC_COMPILER   i486-mingw32-windres)
 
 # Croscompiler path
