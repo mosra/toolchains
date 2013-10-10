@@ -15,6 +15,11 @@ set(CMAKE_SYSTEM_NAME Emscripten)
 
 set(EMSCRIPTEN_PREFIX "/usr/emscripten")
 
+# Spoonfeed CMakeFindBinUtils.cmake, as explicitly set CMAKE_AR/CMAKE_RANLIB
+# would get overwritten with empty string
+set(_CMAKE_TOOLCHAIN_PREFIX em)
+set(_CMAKE_TOOLCHAIN_LOCATION ${EMSCRIPTEN_PREFIX})
+
 set(EMSCRIPTEN_TOOLCHAIN_PATH "${EMSCRIPTEN_PREFIX}/system")
 set(CMAKE_C_COMPILER "${EMSCRIPTEN_PREFIX}/emcc")
 set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++")
