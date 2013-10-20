@@ -5,7 +5,11 @@
 # Start from something sane and working
 include(Platform/Linux)
 
-# TODO: with this suffix CMake is unable to find the libraries
-# set(CMAKE_STATIC_LIBRARY_PREFIX "")
-# set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
+# Prefixes/suffixes for building
+set(CMAKE_STATIC_LIBRARY_PREFIX "")
+set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
+
+# Prefixes/suffixes for finding libraries
+set(CMAKE_FIND_LIBRARY_PREFIXES "")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc")
