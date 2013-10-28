@@ -13,3 +13,7 @@ set(CMAKE_EXECUTABLE_SUFFIX ".js")
 # Prefixes/suffixes for finding libraries
 set(CMAKE_FIND_LIBRARY_PREFIXES "")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc")
+
+# Best possible options for code size in release mode
+set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -O2 --closure 1")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-O2 --closure 1 --llvm-lto 3")
