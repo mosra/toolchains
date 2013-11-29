@@ -17,7 +17,8 @@ set(CMAKE_RC_COMPILER   i486-mingw32-windres)
 set(QT_QMAKE_EXECUTABLE i486-mingw32-qmake)
 
 # Croscompiler path
-set(CMAKE_FIND_ROOT_PATH /usr/i486-mingw32)
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
+    /usr/i486-mingw32)
 
 # Find executables in root path, libraries and includes are in crosscompiler
 # path

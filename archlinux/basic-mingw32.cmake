@@ -15,7 +15,8 @@ set(CMAKE_CXX_COMPILER  i486-mingw32-g++)
 set(CMAKE_RC_COMPILER   i486-mingw32-windres)
 
 # Croscompiler path
-set(CMAKE_FIND_ROOT_PATH /usr/i486-mingw32)
+set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
+    /usr/i486-mingw32)
 
 # This helps find_path(), otherwise it's not able to find e.g.
 # /usr/i486-mingw32/share/cmake/Corrade/. I don't know why it's needed when
