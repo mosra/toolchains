@@ -12,8 +12,10 @@
 #       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Android-x86.cmake
 #
 # Shared library compiled using this toolchain should behave the same as the
-# one compiled with ndk-build. The libraries are then moved into
-# libs/${ANDROID_ABI} to make it available for ant.
+# one compiled with ndk-build. The libraries should be then moved into
+# libs/${ANDROID_ABI} to make it available for ant, e.g.:
+#
+#  set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}")
 #
 
 set(CMAKE_SYSTEM_NAME Android)
@@ -44,6 +46,3 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # Native App Glue
 set(ANDROID_NATIVE_APP_GLUE_INCLUDE_DIR "${ANDROID_NDK_ROOT}/sources/android/native_app_glue/")
 set(ANDROID_NATIVE_APP_GLUE_SRC "${ANDROID_NATIVE_APP_GLUE_INCLUDE_DIR}/android_native_app_glue.c")
-
-# Output dir for compiled stuff
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_SOURCE_DIR}/libs/${ANDROID_ABI}")
