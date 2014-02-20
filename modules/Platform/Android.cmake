@@ -52,9 +52,9 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wa,--noexecstack")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-undefined -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now")
 
 # Specify sysroot so the compiler and linker can find stuff
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --sysroot=${ANDROID_NDK_ROOT}/platforms/${ANDROID_API_LEVEL}/arch-${ANDROID_ARCHITECTURE}")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --sysroot=${ANDROID_NDK_ROOT}/platforms/${ANDROID_API_LEVEL}/arch-${ANDROID_ARCHITECTURE}")
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${ANDROID_NDK_ROOT}/platforms/${ANDROID_API_LEVEL}/arch-${ANDROID_ARCHITECTURE}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} --sysroot=${ANDROID_SYSROOT}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} --sysroot=${ANDROID_SYSROOT}")
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${ANDROID_SYSROOT}")
 
 # Make sure the flags don't get overriden
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "C compiler flags")
