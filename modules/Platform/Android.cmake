@@ -60,6 +60,6 @@ set(CMAKE_SHARED_LINKER_FLAGS "${ANDROID_LINKER_FLAGS}" CACHE STRING "Shared lib
 set(CMAKE_MODULE_LINKER_FLAGS "${ANDROID_LINKER_FLAGS}" CACHE STRING "Module linker flags")
 
 # We are using GCC's libstdc++
-include_directories(SYSTEM
+set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/include"
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/libs/${ANDROID_ABI}/include")
