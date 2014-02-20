@@ -60,3 +60,8 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} --sysroot=${ANDROID_SYSROO
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS}" CACHE STRING "C compiler flags")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}" CACHE STRING "CXX compiler flags")
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS}" CACHE STRING "Linker flags")
+
+# We are using GCC's libstdc++
+include_directories(SYSTEM
+    "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/include"
+    "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/libs/${ANDROID_ABI}/include")
