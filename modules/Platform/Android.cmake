@@ -60,9 +60,7 @@ set(CMAKE_SHARED_LINKER_FLAGS "${ANDROID_LINKER_FLAGS}" CACHE STRING "Shared lib
 set(CMAKE_MODULE_LINKER_FLAGS "${ANDROID_LINKER_FLAGS}" CACHE STRING "Module linker flags")
 
 # Use static GCC's libstdc++ to have exceptions and RTTI
-# TODO: Why do I need to specify this for C and not CXX?
-set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/libs/${ANDROID_ABI}")
-set(CMAKE_C_IMPLICIT_LINK_LIBRARIES "-lgnustl_static" "-lsupc++")
-set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES
+set(CMAKE_CXX_CREATE_SHARED_LIBRARY "<CMAKE_CXX_COMPILER> <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS> -L${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/libs/${ANDROID_ABI} <CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -lgnustl_static -lsupc++")
+include_directories(SYSTEM
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/include"
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.8/libs/${ANDROID_ABI}/include")
