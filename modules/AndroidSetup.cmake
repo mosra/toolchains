@@ -1,10 +1,3 @@
-#
-# Platform file for generic/Android.cmake toolchain
-#
-
-# Start from something sane and working
-include(Platform/Linux)
-
 # Reset the values so they don't accumulate
 set(ANDROID_COMPILER_FLAGS )
 set(ANDROID_LINKER_FLAGS )

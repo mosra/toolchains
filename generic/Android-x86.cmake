@@ -46,3 +46,6 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 # Native App Glue
 set(ANDROID_NATIVE_APP_GLUE_INCLUDE_DIR "${ANDROID_NDK_ROOT}/sources/android/native_app_glue/")
 set(ANDROID_NATIVE_APP_GLUE_SRC "${ANDROID_NATIVE_APP_GLUE_INCLUDE_DIR}/android_native_app_glue.c")
+
+# The rest is shared between ARM and x86
+include(${CMAKE_CURRENT_LIST_DIR}/../modules/AndroidSetup.cmake)
