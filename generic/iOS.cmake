@@ -17,4 +17,6 @@
 set(CMAKE_SYSTEM_NAME "iOS")
 
 # Required to make CMake's test_compile stuff pass
+# https://cmake.org/Bug/view.php?id=15329
 set(CMAKE_MACOSX_BUNDLE ON)
+set(CMAKE_XCODE_ATTRIBUTE_CODE_SIGNING_REQUIRED "NO")
