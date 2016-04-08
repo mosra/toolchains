@@ -3,13 +3,10 @@
 #
 # Modify ANDROID_NDK_ROOT and ANDROID_SYSROOT to your liking. You might also
 # need to update ANDROID_TOOLCHAIN_PREFIX and ANDROID_TOOLCHAIN_ROOT to fit
-# your system. You have to add modules/ directory to CMAKE_MODULE_PATH before
-# using the toolchain file so Android platform file can be found, e.g.:
+# your system.
 #
 #  mkdir build-android-arm && cd build-android-arm
-#  cmake .. \
-#       -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules \
-#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Android-ARM.cmake
+#  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Android-ARM.cmake
 #
 # Shared library compiled using this toolchain should behave the same as the
 # one compiled with ndk-build. The libraries should be then moved into

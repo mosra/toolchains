@@ -1,17 +1,16 @@
 #
 # Toolchain for cross-compiling to JS using Emscripten
 #
-# Modify EMSCRIPTEN_PREFIX to your liking. You have to add modules/ directory
-# to CMAKE_MODULE_PATH before using the toolchain file so Emscripten platform
-# file can be found, e.g.:
+# Modify EMSCRIPTEN_PREFIX to your liking.
 #
 #  mkdir build-emscripten && cd build-emscripten
-#  cmake .. \
-#       -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules \
-#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake
+#  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake
 #
 
 set(CMAKE_SYSTEM_NAME Emscripten)
+
+# Help CMake find the platform file
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
 set(EMSCRIPTEN_PREFIX "/usr/lib/emscripten")
 

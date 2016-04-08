@@ -1,17 +1,16 @@
 #
 # Toolchain for compiling NaCl applications for x86-64 using newlib.
 #
-# Modify NACL_PREFIX to your liking. You have to add modules/ directory to
-# CMAKE_MODULE_PATH before using the toolchain file so NaCl platform file
-# can be found, e.g.:
+# Modify NACL_PREFIX to your liking.
 #
 #  mkdir build-nacl-x86-64 && cd build-nacl-x86-64
-#  cmake .. \
-#       -DCMAKE_MODULE_PATH=/absolute/path/to/toolchains/modules \
-#       -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-newlib-x86-64.cmake
+#  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/NaCl-newlib-x86-64.cmake
 #
 
 set(CMAKE_SYSTEM_NAME NaCl)
+
+# Help CMake find the platform file
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
 set(NACL_PREFIX "/usr/nacl")
 
