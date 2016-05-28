@@ -1,7 +1,8 @@
 #
 # Toolchain for cross-compiling to JS using Emscripten
 #
-# Modify EMSCRIPTEN_PREFIX to your liking.
+# Modify EMSCRIPTEN_PREFIX to your liking or use EMSCRIPTEN environment
+# variable to point to it.
 #
 #  mkdir build-emscripten && cd build-emscripten
 #  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake
@@ -12,7 +13,13 @@ set(CMAKE_SYSTEM_NAME Emscripten)
 # Help CMake find the platform file
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
-set(EMSCRIPTEN_PREFIX "/usr/lib/emscripten")
+if(NOT EMSCRIPTEN_PREFIX)
+    if($ENV{EMSCRIPTEN})
+        set(EMSCRIPTEN_PREFIX $ENV{EMSCRIPTEN})
+    else()
+        set(EMSCRIPTEN_PREFIX "/usr/lib/emscripten")
+    endif()
+endif()
 
 # Spoonfeed CMakeFindBinUtils.cmake, as explicitly set CMAKE_AR/CMAKE_RANLIB
 # would get overwritten with empty string
