@@ -28,7 +28,7 @@ endif()
 set(ANDROID_SYSROOT "${ANDROID_NDK_ROOT}/platforms/android-19/arch-${ANDROID_ARCHITECTURE}")
 
 # Toolchain. See ${ANDROID_NDK_ROOT}/toolchains/ for complete list
-set(ANDROID_TOOLCHAIN "x86-4.8")
+set(ANDROID_TOOLCHAIN "x86-4.9")
 set(ANDROID_TOOLCHAIN_PREFIX "i686-linux-android")
 set(ANDROID_TOOLCHAIN_ROOT "${ANDROID_NDK_ROOT}/toolchains/${ANDROID_TOOLCHAIN}/prebuilt/linux-x86_64/")
 
