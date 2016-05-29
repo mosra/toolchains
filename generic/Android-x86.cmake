@@ -19,6 +19,9 @@ set(CMAKE_SYSTEM_NAME Android)
 set(ANDROID_ARCHITECTURE "x86")
 set(ANDROID_ABI "x86")
 
+# Help CMake find the platform file
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
+
 # NDK root
 if(NOT ANDROID_NDK_ROOT)
     set(ANDROID_NDK_ROOT "/opt/android-ndk")
