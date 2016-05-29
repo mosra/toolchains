@@ -20,7 +20,9 @@ set(ANDROID_ARCHITECTURE "arm")
 set(ANDROID_ABI "armeabi-v7a")
 
 # NDK root
-set(ANDROID_NDK_ROOT "/opt/android-ndk")
+if(NOT ANDROID_NDK_ROOT)
+    set(ANDROID_NDK_ROOT "/opt/android-ndk")
+endif()
 
 # API level to use
 set(ANDROID_SYSROOT "${ANDROID_NDK_ROOT}/platforms/android-19/arch-${ANDROID_ARCHITECTURE}")
