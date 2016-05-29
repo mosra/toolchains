@@ -55,6 +55,9 @@ set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}" CACHE STRING "Modul
 # Set up the paths to libstdc++
 set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES ${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI})
 set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES gnustl_static supc++)
-set(CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES
+
+# Can't use CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES, because CMake won't add
+# these to the compiler command-line. WHY IS THIS SO GODDAMN INCONSISTENT?!
+include_directories(SYSTEM
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/include"
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/include")
