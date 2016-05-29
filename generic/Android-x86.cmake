@@ -23,11 +23,7 @@ set(ANDROID_ABI "x86")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
 # NDK root
-if(NOT ANDROID_NDK_ROOT)
-    set(ANDROID_NDK_ROOT "/opt/android-ndk")
-else()
-    set(ANDROID_NDK_ROOT ${ANDROID_NDK_ROOT} CACHE FILEPATH "Android NDK root")
-endif()
+set(ANDROID_NDK_ROOT "/opt/android-ndk" CACHE FILEPATH "Android NDK root")
 
 # API level to use
 set(ANDROID_SYSROOT "${ANDROID_NDK_ROOT}/platforms/android-19/arch-${ANDROID_ARCHITECTURE}")
