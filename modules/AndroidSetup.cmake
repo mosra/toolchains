@@ -35,8 +35,10 @@ endif()
 # https://android-review.googlesource.com/#/c/47564/
 set(ANDROID_LINKER_FLAGS "${ANDROID_LINKER_FLAGS} -no-canonical-prefixes")
 
-# Specify sysroot so the compiler and linker can find stuff
-set(CMAKE_SYSROOT ${ANDROID_SYSROOT})
+# Specify sysroot so the compiler and linker can find stuff. Can't use
+# CMAKE_SYSROOT as it is FUCKING BROKEN ON 2.8.12 GODDAMIT AARGH
+set(ANDROID_COMPILER_FLAGS "${ANDROID_COMPILER_FLAGS} --sysroot=${ANDROID_SYSROOT}")
+set(ANDROID_LINKER_FLAGS "${ANDROID_LINKER_FLAGS} --sysroot=${ANDROID_SYSROOT}")
 
 # Disallow undefined symbols, memory corruption mitigation, etc.
 # This is needed to ensure that everything is really linked in, because it
