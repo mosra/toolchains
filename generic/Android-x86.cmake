@@ -22,8 +22,15 @@ set(ANDROID_ABI "x86")
 # Help CMake find the platform file
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
-# NDK root
-set(ANDROID_NDK_ROOT "/opt/android-ndk" CACHE FILEPATH "Android NDK root")
+# NDK root. It *has* to be passed as environment variable and not via -D,
+# because this toolchain file gets included from project() and then from
+# CMakeSystem.cmake, which FOR SOME REASON doesn't propagate stuff passed from
+# command-line. I SPENT TWO DAYS FIGHTING THIS, GODDAMIT.
+if(DEFINED ENV{ANDROID_NDK})
+    set(ANDROID_NDK_ROOT $ENV{ANDROID_NDK})
+else()
+    set(ANDROID_NDK_ROOT "/opt/android-ndk")
+endif()
 
 # API level to use
 set(ANDROID_SYSROOT "${ANDROID_NDK_ROOT}/platforms/android-19/arch-${ANDROID_ARCHITECTURE}")
@@ -36,8 +43,7 @@ set(ANDROID_TOOLCHAIN_ROOT "${ANDROID_NDK_ROOT}/toolchains/${ANDROID_TOOLCHAIN}/
 set(CMAKE_C_COMPILER "${ANDROID_TOOLCHAIN_ROOT}/bin/${ANDROID_TOOLCHAIN_PREFIX}-gcc")
 set(CMAKE_CXX_COMPILER "${ANDROID_TOOLCHAIN_ROOT}/bin/${ANDROID_TOOLCHAIN_PREFIX}-g++")
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
-    "${ANDROID_SYSROOT}"
-    "${ANDROID_TOOLCHAIN_ROOT}")
+    ${ANDROID_TOOLCHAIN_ROOT})
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)

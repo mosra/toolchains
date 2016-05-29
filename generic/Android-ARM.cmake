@@ -22,8 +22,15 @@ set(ANDROID_ABI "armeabi-v7a")
 # Help CMake find the platform file
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
-# NDK root
-set(ANDROID_NDK_ROOT "/opt/android-ndk" CACHE FILEPATH "Android NDK root")
+# NDK root. It *has* to be passed as environment variable and not via -D,
+# because this toolchain file gets included from project() and then from
+# CMakeSystem.cmake, which FOR SOME REASON doesn't propagate stuff passed from
+# command-line. I SPENT TWO DAYS FIGHTING THIS, GODDAMIT.
+if(DEFINED ENV{ANDROID_NDK})
+    set(ANDROID_NDK_ROOT $ENV{ANDROID_NDK})
+else()
+    set(ANDROID_NDK_ROOT "/opt/android-ndk")
+endif()
 
 # API level to use
 set(ANDROID_SYSROOT "${ANDROID_NDK_ROOT}/platforms/android-19/arch-${ANDROID_ARCHITECTURE}")

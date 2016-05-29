@@ -36,8 +36,7 @@ endif()
 set(ANDROID_LINKER_FLAGS "${ANDROID_LINKER_FLAGS} -no-canonical-prefixes")
 
 # Specify sysroot so the compiler and linker can find stuff
-set(ANDROID_COMPILER_FLAGS "${ANDROID_COMPILER_FLAGS} --sysroot=${ANDROID_SYSROOT}")
-set(ANDROID_LINKER_FLAGS "${ANDROID_LINKER_FLAGS} --sysroot=${ANDROID_SYSROOT}")
+set(CMAKE_SYSROOT ${ANDROID_SYSROOT})
 
 # Disallow undefined symbols, memory corruption mitigation, etc.
 # This is needed to ensure that everything is really linked in, because it
@@ -52,12 +51,12 @@ set(CMAKE_CXX_FLAGS "${ANDROID_COMPILER_FLAGS}" CACHE STRING "CXX compiler flags
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}" CACHE STRING "Shared library linker flags")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}" CACHE STRING "Module linker flags")
 
-# Set up the paths to libstdc++
-set(CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES ${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI})
-set(CMAKE_CXX_IMPLICIT_LINK_LIBRARIES gnustl_static supc++)
+# Set up the paths to libstdc++. I HAD TO USE UNDOCUMENTED INTERNAL VARIABLE
+# TO FILL THIS, U MAD, CMAKE?!
+set(CMAKE_CXX_STANDARD_LIBRARIES_INIT "-L${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI} -lgnustl_static -lsupc++")
 
-# Can't use CMAKE_CXX_IMPLICIT_INCLUDE_DIRECTORIES, because CMake won't add
-# these to the compiler command-line. WHY IS THIS SO GODDAMN INCONSISTENT?!
+# Fuck you cmake, for not providing any variable for implicit include
+# directories. This feels dirty.
 include_directories(SYSTEM
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/include"
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/include")
