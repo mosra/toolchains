@@ -25,6 +25,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 # NDK root
 if(NOT ANDROID_NDK_ROOT)
     set(ANDROID_NDK_ROOT "/opt/android-ndk")
+else()
+    set(ANDROID_NDK_ROOT ${ANDROID_NDK_ROOT} CACHE FILEPATH "Android NDK root")
 endif()
 
 # API level to use
