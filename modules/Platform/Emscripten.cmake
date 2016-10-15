@@ -27,3 +27,8 @@ set(CMAKE_EXE_LINKER_FLAGS_RELEASE "-O3 --closure 1 --llvm-lto 1" CACHE STRING "
 # of RPath, which is of no use on this platform). This also allows us to use
 # Ninja, finally.
 set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
+
+# Emscripten has Clang underneath and it supports -isystem. For some reason the
+# compiler autodetection fails to detect this and this cause overwhelming
+# amount of spam messages when including third-party headers.
+set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
