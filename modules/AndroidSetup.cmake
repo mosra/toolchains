@@ -53,6 +53,7 @@ set(CMAKE_CXX_FLAGS "${ANDROID_COMPILER_FLAGS}" CACHE STRING "CXX compiler flags
 set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS}" CACHE STRING "Shared library linker flags")
 set(CMAKE_MODULE_LINKER_FLAGS "${CMAKE_MODULE_LINKER_FLAGS}" CACHE STRING "Module linker flags")
 
+<<<<<<< 1e2799dc30540b5d0a90395d654aec63116e9d6e
 # Set up the paths to libstdc++. I HAD TO USE UNDOCUMENTED INTERNAL VARIABLE
 # TO FILL THIS, U MAD, CMAKE?!
 set(CMAKE_CXX_STANDARD_LIBRARIES_INIT "-L${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI} -lgnustl_static -lsupc++")
@@ -62,3 +63,12 @@ set(CMAKE_CXX_STANDARD_LIBRARIES_INIT "-L${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu
 include_directories(SYSTEM
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/include"
     "${ANDROID_NDK_ROOT}/sources/cxx-stl/gnu-libstdc++/4.9/libs/${ANDROID_ABI}/include")
+=======
+# Use static GCC's libstdc++ to have exceptions and RTTI
+set(CMAKE_CXX_CREATE_SHARED_LIBRARY "<CMAKE_CXX_COMPILER> <CMAKE_SHARED_LIBRARY_CXX_FLAGS> <LANGUAGE_COMPILE_FLAGS> <LINK_FLAGS>"
+    "-L${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libstdc++/${ANDROID_GCC_VERSION}/libs/${ANDROID_ABI}"
+    "<CMAKE_SHARED_LIBRARY_CREATE_CXX_FLAGS> <SONAME_FLAG><TARGET_SONAME> -o <TARGET> <OBJECTS> <LINK_LIBRARIES> -lc++_static -lsupc++")
+include_directories(SYSTEM
+    "${ANDROID_NDK_ROOT}/sources/cxx-stl/llvm-libc++/libcxx/include"
+     "${ANDROID_NDK_ROOT}/sources/android/support/include")
+>>>>>>> WIP: Android compilation stuff

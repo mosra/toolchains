@@ -29,7 +29,11 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 if(DEFINED ENV{ANDROID_NDK})
     set(ANDROID_NDK_ROOT $ENV{ANDROID_NDK})
 else()
-    set(ANDROID_NDK_ROOT "/opt/android-ndk")
+    if(WINDOWS)
+        set(ANDROID_NDK_ROOT "C:/Users/Squareys/Documents/android-ndk-r11b")
+    else()
+        set(ANDROID_NDK_ROOT "/opt/android-ndk")
+    endif()
 endif()
 
 # API level to use
