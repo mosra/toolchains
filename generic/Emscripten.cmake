@@ -1,8 +1,8 @@
 #
 # Toolchain for cross-compiling to JS using Emscripten
 #
-# Modify EMSCRIPTEN_PREFIX to your liking or use EMSCRIPTEN environment
-# variable to point to it.
+# Modify EMSCRIPTEN_PREFIX to your liking; use EMSCRIPTEN environment variable
+# to point to it or pass it explicitly via -DEMSCRIPTEN_PREFIX=<path>.
 #
 #  mkdir build-emscripten && cd build-emscripten
 #  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake

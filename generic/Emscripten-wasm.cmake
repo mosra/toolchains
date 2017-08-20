@@ -1,11 +1,11 @@
 #
-# Toolchain for cross-compiling to JS using Emscripten
+# Toolchain for cross-compiling to JS using Emscripten with WebAssembly
 #
-# Modify EMSCRIPTEN_PREFIX to your liking or use EMSCRIPTEN environment
-# variable to point to it.
+# Modify EMSCRIPTEN_PREFIX to your liking; use EMSCRIPTEN environment variable
+# to point to it or pass it explicitly via -DEMSCRIPTEN_PREFIX=<path>.
 #
-#  mkdir build-emscripten && cd build-emscripten
-#  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake
+#  mkdir build-emscripten-wasm && cd build-emscripten-wasm
+#  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten-wasm.cmake
 #
 
 set(CMAKE_SYSTEM_NAME Emscripten)
