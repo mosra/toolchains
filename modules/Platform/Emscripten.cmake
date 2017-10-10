@@ -10,10 +10,8 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
-# Prefixes/suffixes for finding libraries. If I leave just "" in
-# CMAKE_FIND_LIBRARY_PREFIXES, CMake then sometimes complains that the variable
-# is empty, this works around that.
-set(CMAKE_FIND_LIBRARY_PREFIXES "" "somebogusprefix")
+# Prefixes/suffixes for finding libraries
+set(CMAKE_FIND_LIBRARY_PREFIXES "")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc")
 
 # Disable annoying warning about absolute includes
