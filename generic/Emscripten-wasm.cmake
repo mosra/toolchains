@@ -14,7 +14,7 @@ set(CMAKE_SYSTEM_NAME Emscripten)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
 
 if(NOT EMSCRIPTEN_PREFIX)
-    if(DEFIEND ENV{EMSCRIPTEN})
+    if($ENV{EMSCRIPTEN})
         set(EMSCRIPTEN_PREFIX $ENV{EMSCRIPTEN})
     else()
         set(EMSCRIPTEN_PREFIX "/usr/lib/emscripten")
