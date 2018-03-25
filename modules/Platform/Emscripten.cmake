@@ -20,7 +20,7 @@ set(CMAKE_FIND_LIBRARY_PREFIXES "")
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc")
 
 # Disable annoying warning about absolute includes
-set(CMAKE_CXX_FLAGS "-Wno-warn-absolute-paths")
+string(APPEND CMAKE_CXX_FLAGS " -Wno-warn-absolute-paths")
 
 # Setting this prevents CMake from doing a relink on install (that is because
 # of RPath, which is of no use on this platform). This also allows us to use
