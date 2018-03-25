@@ -5,6 +5,11 @@
 # Start from something sane and working
 include(Platform/Linux)
 
+if(_EMSCRIPTEN_INCLUDED)
+    return()
+endif()
+set(_EMSCRIPTEN_INCLUDED 1)
+
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
