@@ -41,8 +41,11 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
-# Best possible options for code size in release mode. The *_INIT variables are
-# available since CMake 3.7, so it won't work in earlier versions. Sorry.
+# Since some unspecified release, -s WASM=1 is the default, so we need to
+# explicitly say -s WASM=0 to use asm.js. The *_INIT variables are available
+# since CMake 3.7, so it won't work in earlier versions. Sorry.
 cmake_minimum_required(VERSION 3.7)
-set(CMAKE_CXX_FLAGS_RELEASE_INIT " -DNDEBUG -O3")
-set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT " -O3 --llvm-lto 1")
+set(CMAKE_CXX_FLAGS_INIT "-s WASM=0")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=0")
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG -O3")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT "-O3 --llvm-lto 1")
