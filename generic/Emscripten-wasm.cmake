@@ -41,6 +41,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 
+# Otherwise FindCorrade fails to find _CORRADE_MODULE_DIR. Why the heck is this
+# not implicit is beyond me.
+set(CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_FIND_ROOT_PATH})
+
 # Compared to the classic (asm.js) compilation, -s WASM=1 is added to both
 # compiler and linker. The *_INIT variables are available since CMake 3.7, so
 # it won't work in earlier versions. Sorry.
