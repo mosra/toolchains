@@ -43,7 +43,7 @@ if(NOT ANDROID_SDK)
     endif()
 endif()
 
-# Build tools version to use. Picks the first one
+# Build tools version to use. Picks the newest version.
 if(NOT ANDROID_BUILD_TOOLS_VERSION)
     file(GLOB _ANDROID_BUILD_TOOLS_FOR_VERSION RELATIVE ${ANDROID_SDK}/build-tools/ ${ANDROID_SDK}/build-tools/*.*.*)
     list(GET _ANDROID_BUILD_TOOLS_FOR_VERSION -1 ANDROID_BUILD_TOOLS_VERSION)
