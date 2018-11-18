@@ -1,7 +1,5 @@
 # - Android tools for CMake
 #
-# TODO: better docs (put them on doc.magnum.graphics)
-#
 #   android_create_apk(target manifest)
 #
 # The script should autodetect the `ANDROID_SDK`, `ANDROID_BUILD_TOOLS_VERSION`,
@@ -9,29 +7,28 @@
 # If it doesn't or the values are different than you'd like, set them from the
 # CMake cache.
 #
-# You may want to update ANDROID_APKSIGNER_KEY to match your keystore location
-# and password. Here I just took the default debug.keystore that Gradle
-# generated on my system and guesstimated its password to be "android".
+# You may want to update `ANDROID_APKSIGNER_KEY` to match your keystore
+# location and password. Here I just took the default debug.keystore that
+# Gradle generated on my system and guesstimated its password to be "android".
 #
 # The function also creates a new target ${target}-deploy which you can use to
 # install the APK directly from the IDE / command-line.
 #
 # Limitations:
 #
-#   -   It's packaging just one ABI, the one you are currently building with
-#       CMake. It might be possible to work around this somehow in the future,
-#       but so far it's like this.
-#   -   No resources are packed or compiled, it's wrapping just a single *.so
-#       in the APK.
-#   -   There is lots of autodetection that can go wrong.
+# - It's packaging just one ABI, the one you are currently building with CMake.
+#   It might be possible to work around this somehow in the future, but so far
+#   it's like this.
+# - No resources are packed or compiled, it's wrapping just a single *.so in
+#   the APK.
+# - There is lots of autodetection that can go wrong.
 #
 
 cmake_minimum_required(VERSION 3.7) # Android support is since 3.7
 
 # Override this to point to your debug.keystore location (and specify a
 # password)
-# TODO: better autodetection
-set(ANDROID_APKSIGNER_KEY --ks ~/.android/debug.keystore --ks-pass pass:android CACHE STRING "")
+set(ANDROID_APKSIGNER_KEY --ks $ENV{HOME}/.android/debug.keystore --ks-pass pass:android CACHE STRING "")
 
 # Path to Android SDK. The build-tools/ subdirectory must exist.
 if(NOT ANDROID_SDK)
@@ -84,6 +81,7 @@ function(android_create_apk target manifest)
     # *ages*.
     add_custom_command(OUTPUT ${library_destination}
         COMMAND ${CMAKE_STRIP} $<TARGET_FILE:${target}> -o ${library_destination}
+        COMMENT "Copying stripped ${target} for an APK build"
         DEPENDS $<TARGET_FILE:${target}>)
 
     # Package this file together with the manifest
@@ -96,6 +94,7 @@ function(android_create_apk target manifest)
     get_filename_component(manifest_absolute ${manifest} REALPATH)
     add_custom_command(OUTPUT ${unaligned_apk}
         COMMAND ${tools_root}/aapt package -f -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar -F ${unaligned_apk} ${apk_root}/bin
+        COMMENT "Packaging ${target}-unaligned.apk"
         DEPENDS ${library_destination} ${manifest})
 
     # TODO: compiling resources like icons etc.
@@ -103,12 +102,14 @@ function(android_create_apk target manifest)
     # Align the APK
     add_custom_command(OUTPUT ${unsigned_apk}
         COMMAND ${tools_root}/zipalign -f 4 ${unaligned_apk} ${unsigned_apk}
+        COMMENT "Aligning ${target}-unsigned.apk"
         DEPENDS ${unaligned_apk})
 
     # Sign the APK
     # TODO: make this configurable better
     add_custom_command(OUTPUT ${apk}
         COMMAND ${tools_root}/apksigner sign ${ANDROID_APKSIGNER_KEY} --out ${apk} ${unsigned_apk}
+        COMMENT "Signing ${target}.apk"
         DEPENDS ${unsigned_apk})
 
     # Make the APK dependency of an "always build" target so it gets built by
@@ -118,6 +119,7 @@ function(android_create_apk target manifest)
     # Add an explicit deploy target for easy install
     add_custom_target(${target}-deploy
         COMMAND adb install -r ${apk}
+        COMMENT "Installing ${target}.apk"
         DEPENDS ${apk})
 
     # TODO: Could be also possible to do this, but that makes sense only for
