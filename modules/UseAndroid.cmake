@@ -28,7 +28,7 @@ cmake_minimum_required(VERSION 3.7) # Android support is since 3.7
 
 # Override this to point to your debug.keystore location (and specify a
 # password)
-if(WINDOWS)
+if(CMAKE_HOST_SYSTEM_NAME STREQUAL "Windows")
     set(ANDROID_APKSIGNER_KEY --ks $ENV{USERPROFILE}/.android/debug.keystore --ks-pass pass:android CACHE STRING "")
 else()
     set(ANDROID_APKSIGNER_KEY --ks $ENV{HOME}/.android/debug.keystore --ks-pass pass:android CACHE STRING "")
