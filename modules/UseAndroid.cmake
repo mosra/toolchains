@@ -74,7 +74,8 @@ function(android_create_apk target manifest)
     # TODO: can't use $<TARGET_FILE_NAME:target> here because of
     # https://gitlab.kitware.com/cmake/cmake/issues/12877 -- mention that in
     # limitations
-    set(library_destination ${apk_root}/bin/lib/${CMAKE_ANDROID_ARCH_ABI}/lib${target}.so)
+    set(library_destination_path ${apk_root}/bin/lib/${CMAKE_ANDROID_ARCH_ABI})
+    set(library_destination ${library_destination_path}/lib${target}.so)
     set(unaligned_apk ${apk_root}/${target}-unaligned.apk)
     set(unsigned_apk ${apk_root}/${target}-unsigned.apk)
     set(apk ${CMAKE_CURRENT_BINARY_DIR}/${target}.apk)
@@ -84,6 +85,7 @@ function(android_create_apk target manifest)
     # interface won't find it. Without the strip the apk creation would take
     # *ages*.
     add_custom_command(OUTPUT ${library_destination}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${library_destination_path}
         COMMAND ${CMAKE_STRIP} $<TARGET_FILE:${target}> -o ${library_destination}
         COMMENT "Copying stripped ${target} for an APK build"
         DEPENDS $<TARGET_FILE:${target}>)
