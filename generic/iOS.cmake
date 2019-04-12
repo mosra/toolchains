@@ -15,7 +15,7 @@
 set(CMAKE_SYSTEM_NAME "iOS")
 
 # Help CMake find the platform file
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/../modules)
+set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../modules ${CMAKE_MODULE_PATH})
 
 # Required to make CMake's test_compile stuff pass
 # https://cmake.org/Bug/view.php?id=15329
