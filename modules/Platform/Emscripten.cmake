@@ -10,6 +10,9 @@ if(_EMSCRIPTEN_INCLUDED)
 endif()
 set(_EMSCRIPTEN_INCLUDED 1)
 
+# Set a global EMSCRIPTEN variable that can be used in client CMakeLists.txt to detect when building using Emscripten.
+set(EMSCRIPTEN 1 CACHE BOOL "If true, we are targeting Emscripten output.")
+
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
