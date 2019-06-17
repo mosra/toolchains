@@ -11,10 +11,6 @@
 set(CMAKE_SYSTEM_NAME Emscripten)
 set(CMAKE_SYSTEM_VERSION 1)
 
-# Set a global EMSCRIPTEN variable that can be used in client CMakeLists.txt to detect when building using Emscripten.
-# https://github.com/emscripten-core/emscripten/blob/incoming/cmake/Modules/Platform/Emscripten.cmake#L228
-set(EMSCRIPTEN 1 CACHE BOOL "If true, we are targeting Emscripten output.")
-
 # Help CMake find the platform file
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../modules ${CMAKE_MODULE_PATH})
 
@@ -56,7 +52,7 @@ set(CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_FIND_ROOT_PATH})
 # since CMake 3.7, so it won't work in earlier versions. Sorry.
 cmake_minimum_required(VERSION 3.7)
 
-string(APPEND CMAKE_CXX_FLAGS_INIT " -s WASM=0")
-string(APPEND CMAKE_EXE_LINKER_FLAGS_INIT " -s WASM=0")
-string(APPEND CMAKE_CXX_FLAGS_RELEASE_INIT " -DNDEBUG -O3")
-string(APPEND CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT " -O3 --llvm-lto 1")
+set(CMAKE_CXX_FLAGS_INIT "-s WASM=0")
+set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=0")
+set(CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG -O3")
+set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT "-O3 --llvm-lto 1")
