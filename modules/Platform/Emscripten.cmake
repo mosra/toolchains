@@ -10,6 +10,12 @@ if(_EMSCRIPTEN_INCLUDED)
 endif()
 set(_EMSCRIPTEN_INCLUDED 1)
 
+# Set a global EMSCRIPTEN variable that can be used in client CMakeLists.txt to
+# detect when building using Emscripten. The go-to way when using Corrade is
+# to check CORRADE_TARGET_* variables, this is mainly to support 3rd party
+# projects.
+set(EMSCRIPTEN 1 CACHE BOOL "If true, we are targeting Emscripten output." FORCE)
+
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
