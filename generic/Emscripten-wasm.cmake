@@ -13,6 +13,13 @@ set(CMAKE_SYSTEM_NAME Emscripten)
 # Help CMake find the platform file
 set(CMAKE_MODULE_PATH ${CMAKE_CURRENT_LIST_DIR}/../modules ${CMAKE_MODULE_PATH})
 
+# Give a hand to first-time Windows users
+if(CMAKE_HOST_WIN32)
+    if(CMAKE_GENERATOR MATCHES "Visual Studio")
+        message(FATAL_ERROR "Visual Studio project generator doesn't support cross-compiling to Emscripten. Please use -G Ninja or other generators instead.")
+    endif()
+endif()
+
 if(NOT EMSCRIPTEN_PREFIX)
     if(DEFINED ENV{EMSCRIPTEN})
         file(TO_CMAKE_PATH "$ENV{EMSCRIPTEN}" EMSCRIPTEN_PREFIX)
