@@ -23,8 +23,13 @@ endif()
 if(NOT EMSCRIPTEN_PREFIX)
     if(DEFINED ENV{EMSCRIPTEN})
         file(TO_CMAKE_PATH "$ENV{EMSCRIPTEN}" EMSCRIPTEN_PREFIX)
+    # On Homebrew the sysroot is here, however emcc is also available in
+    # /usr/local/bin. It's impossible to figure out the sysroot from there, so
+    # try this first
+    elseif(EXISTS "/usr/local/opt/emscripten/libexec/emcc")
+        set(EMSCRIPTEN_PREFIX "/usr/local/opt/emscripten/libexec")
+    # Look for emcc in the path as a last resort
     else()
-        # look for emcc in the path as a last resort
         find_file(_EMSCRIPTEN_EMCC_EXECUTABLE emcc)
         if(EXISTS ${_EMSCRIPTEN_EMCC_EXECUTABLE})
             get_filename_component(EMSCRIPTEN_PREFIX ${_EMSCRIPTEN_EMCC_EXECUTABLE} DIRECTORY)
