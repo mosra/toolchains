@@ -124,7 +124,7 @@ function(android_create_apk target manifest)
 
     # Add an explicit deploy target for easy install
     add_custom_target(${target}-deploy
-        COMMAND adb install -r ${apk}
+        COMMAND ${ANDROID_SDK}/platform-tools/adb install -r ${apk}
         COMMENT "Installing ${target}.apk"
         DEPENDS ${apk})
 
