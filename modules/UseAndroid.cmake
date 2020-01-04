@@ -68,7 +68,7 @@ if(NOT ANDROID_PLATFORM_VERSION)
     endif()
 endif()
 
-function(android_create_apk target manifest)
+function(android_create_apk target manifest local_res local_assets)
     set(tools_root ${ANDROID_SDK}/build-tools/${ANDROID_BUILD_TOOLS_VERSION})
     set(apk_root ${CMAKE_CURRENT_BINARY_DIR}/${target}-apk)
     # TODO: can't use $<TARGET_FILE_NAME:target> here because of
@@ -85,13 +85,14 @@ function(android_create_apk target manifest)
     set(unsigned_apk ${apk_root}/${target}-unsigned.apk)
     set(apk ${CMAKE_CURRENT_BINARY_DIR}/${target}.apk)
 
-    # Copy the library to the destination, stripping it in the process. It
-    # needs to be in a folder that corresponds to its ABI, otherwise the java
+    # Create the apk folder structure, copying in the res and assets.
+    # Also copy the library to the destination, stripping it in the process. 
+    # It needs to be in a folder that corresponds to its ABI, otherwise the java
     # interface won't find it. Without the strip the apk creation would take
     # *ages*.
     add_custom_command(OUTPUT ${library_destination}
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${res_destination_path}
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${assets_destination_path}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_res} ${res_destination_path}
+        COMMAND ${CMAKE_COMMAND} -E copy_directory ${local_assets} ${assets_destination_path}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${library_destination_path}
         COMMAND ${CMAKE_STRIP} $<TARGET_FILE:${target}> -o ${library_destination}
         COMMENT "Copying stripped ${target} for an APK build"
@@ -106,7 +107,7 @@ function(android_create_apk target manifest)
     # TODO: for resources i need to add -m -J src/
     get_filename_component(manifest_absolute ${manifest} REALPATH)
     add_custom_command(OUTPUT ${unaligned_apk}
-        COMMAND ${tools_root}/aapt package -f -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar -F ${unaligned_apk} ${apk_root}/bin
+        COMMAND ${tools_root}/aapt package -f -A ${assets_destination_path} -S ${res_destination_path} -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar -F ${unaligned_apk} ${apk_root}/bin
         COMMENT "Packaging ${target}-unaligned.apk"
         DEPENDS ${library_destination} ${manifest})
 
