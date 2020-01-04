@@ -80,6 +80,12 @@ function(android_create_apk target manifest)
     set(unsigned_apk ${apk_root}/${target}-unsigned.apk)
     set(apk ${CMAKE_CURRENT_BINARY_DIR}/${target}.apk)
 
+    # prepare APK structure
+    get_filename_component(manifest_absolute ${manifest} REALPATH)
+    add_custom_command(TARGET ${target}-apk PRE_BUILD
+        COMMAND ${tools_root}/aapt package -v -f -m -A ${apk_root}/bin/assets -S ${apk_root}/bin/res -J ${apk_root}/bin/src -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar
+    )
+
     # Copy the library to the destination, stripping it in the process. It
     # needs to be in a folder that corresponds to its ABI, otherwise the java
     # interface won't find it. Without the strip the apk creation would take
@@ -97,7 +103,6 @@ function(android_create_apk target manifest)
     # TODO: can pass -0 so to not compress anything, yay! but then upload may
     #   be slower
     # TODO: for resources i need to add -m -J src/
-    get_filename_component(manifest_absolute ${manifest} REALPATH)
     add_custom_command(OUTPUT ${unaligned_apk}
         COMMAND ${tools_root}/aapt package -f -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar -F ${unaligned_apk} ${apk_root}/bin
         COMMENT "Packaging ${target}-unaligned.apk"
