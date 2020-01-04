@@ -74,6 +74,11 @@ function(android_create_apk target manifest)
     # TODO: can't use $<TARGET_FILE_NAME:target> here because of
     # https://gitlab.kitware.com/cmake/cmake/issues/12877 -- mention that in
     # limitations
+
+    # Android folder structure reference:
+    # https://en.wikipedia.org/wiki/Android_application_package
+    set(res_destination_path ${apk_root}/bin/res)
+    set(assets_destination_path ${apk_root}/bin/assets)
     set(library_destination_path ${apk_root}/bin/lib/${CMAKE_ANDROID_ARCH_ABI})
     set(library_destination ${library_destination_path}/lib${target}.so)
     set(unaligned_apk ${apk_root}/${target}-unaligned.apk)
@@ -85,6 +90,8 @@ function(android_create_apk target manifest)
     # interface won't find it. Without the strip the apk creation would take
     # *ages*.
     add_custom_command(OUTPUT ${library_destination}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${res_destination_path}
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${assets_destination_path}
         COMMAND ${CMAKE_COMMAND} -E make_directory ${library_destination_path}
         COMMAND ${CMAKE_STRIP} $<TARGET_FILE:${target}> -o ${library_destination}
         COMMENT "Copying stripped ${target} for an APK build"
@@ -127,11 +134,6 @@ function(android_create_apk target manifest)
         COMMAND ${ANDROID_SDK}/platform-tools/adb install -r ${apk}
         COMMENT "Installing ${target}.apk"
         DEPENDS ${apk})
-
-    # prepare APK structure
-    add_custom_command(TARGET ${target}-apk PRE_BUILD
-        COMMAND ${tools_root}/aapt package -v -f -m -A ${apk_root}/bin/assets -S ${apk_root}/bin/res -J ${apk_root}/bin/src -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar
-    )
 
     # TODO: Could be also possible to do this, but that makes sense only for
     # projects that only ever have just one APK output -- have it as an option?
