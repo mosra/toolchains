@@ -57,19 +57,6 @@ set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}")
 # and doing it everywhere.
 set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
 set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
-# CMake 3.9 adds CMAKE_<LANG>_COMPILER_{AR,RANLIB} which are used instead of
-# CMAKE_AR / CMAKE_RANLIB. If not set, CMake may pick up llvm-ar / llvm-ranlib
-# instead, which has issues with duplicate basenames in archives (such as
-# String.cpp.o in both Corrade/Containers and Utility, or Mesh.cpp.o in Magnum
-# and Magnum/GL etc.), emitting warnings like "foo.bc: archive file contains
-# duplicate entries. This is not supported by emscripten. Only the last member
-# with a given name will be linked in which can result in undefined symbols.
-# You should either rename your source files, or use `emar` to create you
-# archives which works around this issue.".
-set(CMAKE_C_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
-set(CMAKE_CXX_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
-set(CMAKE_C_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
-set(CMAKE_CXX_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
 
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
     "${EMSCRIPTEN_TOOLCHAIN_PATH}"
