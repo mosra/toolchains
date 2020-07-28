@@ -49,8 +49,14 @@ else()
 endif()
 set(CMAKE_C_COMPILER "${EMSCRIPTEN_PREFIX}/emcc${EMCC_SUFFIX}")
 set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}")
-set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}")
-set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}")
+# The `CACHE PATH "bla"` *has to be* present as otherwise CMake < 3.13.0 would
+# for some reason forget the path to `ar`, calling it as `"" qc bla`, failing
+# with `/bin/sh: : command not found`. This is probably related to CMP0077 in
+# some way but I didn't bother investigating further. It apparently doesn't
+# need to be set for the CMAKE_<LANG>_COMPILER_{AR,RANLIB} but playing it safe
+# and doing it everywhere.
+set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
+set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
 # CMake 3.9 adds CMAKE_<LANG>_COMPILER_{AR,RANLIB} which are used instead of
 # CMAKE_AR / CMAKE_RANLIB. If not set, CMake may pick up llvm-ar / llvm-ranlib
 # instead, which has issues with duplicate basenames in archives (such as
@@ -60,10 +66,10 @@ set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}")
 # with a given name will be linked in which can result in undefined symbols.
 # You should either rename your source files, or use `emar` to create you
 # archives which works around this issue.".
-set(CMAKE_C_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}")
-set(CMAKE_CXX_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}")
-set(CMAKE_C_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}")
-set(CMAKE_CXX_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}")
+set(CMAKE_C_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
+set(CMAKE_CXX_COMPILER_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
+set(CMAKE_C_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
+set(CMAKE_CXX_COMPILER_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
 
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
     "${EMSCRIPTEN_TOOLCHAIN_PATH}"
