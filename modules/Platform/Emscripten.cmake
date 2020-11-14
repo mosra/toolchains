@@ -39,4 +39,4 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
 
 # Include the UseEmscripten file with useful macros
-include(UseEmscripten.cmake)
+include(UseEmscripten)
