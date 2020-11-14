@@ -37,3 +37,6 @@ set(CMAKE_BUILD_WITH_INSTALL_RPATH TRUE)
 # compiler autodetection fails to detect this and this cause overwhelming
 # amount of spam messages when including third-party headers.
 set(CMAKE_INCLUDE_SYSTEM_FLAG_CXX "-isystem")
+
+# Include the UseEmscripten file with useful macros
+include(UseEmscripten.cmake)
