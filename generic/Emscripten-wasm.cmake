@@ -59,6 +59,14 @@ set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}" CACHE FILEPATH 
 # some way but I didn't bother investigating further.
 set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
 set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
+# When CMAKE_INTERPROCEDURAL_OPTIMIZATION is set, CMake apparently uses these
+# instead of CMAKE_AR and such. Couldn't find any official documentation on
+# why, https://github.com/emscripten-core/emscripten/issues/11143 seems to be
+# the only place mentioning this.
+set(CMAKE_C_COMPILER_AR "${CMAKE_AR}")
+set(CMAKE_CXX_COMPILER_AR "${CMAKE_AR}")
+set(CMAKE_C_COMPILER_RANLIB "${CMAKE_RANLIB}")
+set(CMAKE_CXX_COMPILER_RANLIB "${CMAKE_RANLIB}")
 
 # Fetch Emscripten version, needed for the below setup. Taken from
 # https://github.com/emscripten-core/emscripten/blob/74d6a15644e7f6e76ed6a1da9c6937b5cb7aef6e/cmake/Modules/Platform/Emscripten.cmake#L152
