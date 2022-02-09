@@ -36,7 +36,15 @@ endif()
 
 # Path to Android SDK. The build-tools/ subdirectory must exist.
 if(NOT ANDROID_SDK)
-    get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../android-sdk/ REALPATH CACHE)
+    # On Arch it's /opt/android-sdk and /opt/android-ndk
+    if(EXISTS ${CMAKE_ANDROID_NDK}/../android-sdk/build-tools)
+        get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../android-sdk/ REALPATH CACHE)
+    # On CircleCI it's /opt/android/sdk/ndk/<VERSION>
+    elseif(EXISTS ${CMAKE_ANDROID_NDK}/../../build-tools)
+        get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../../ REALPATH CACHE)
+    # Otherwise no idea
+    endif()
+
     if(ANDROID_SDK)
         message(STATUS "ANDROID_SDK not set, detected ${ANDROID_SDK}")
     else()
