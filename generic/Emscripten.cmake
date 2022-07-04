@@ -7,6 +7,8 @@
 #  mkdir build-emscripten && cd build-emscripten
 #  cmake .. -DCMAKE_TOOLCHAIN_FILE=../toolchains/generic/Emscripten.cmake
 #
+# On MSVC set "intelliSenseMode": "linux-gcc-x86" in CMakeSettings.json to get
+# IntelliSense to work.
 
 set(CMAKE_SYSTEM_NAME Emscripten)
 
@@ -47,8 +49,12 @@ if(CMAKE_HOST_WIN32)
 else()
     set(EMCC_SUFFIX "")
 endif()
-set(CMAKE_C_COMPILER "${EMSCRIPTEN_PREFIX}/emcc${EMCC_SUFFIX}")
-set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}")
+
+# MSVC IntelliSense requires these variables to be put into cache:
+# https://devblogs.microsoft.com/cppblog/configure-intellisense-with-cmake-toolchain-files-in-visual-studio-2019-16-9-preview-2/
+set(CMAKE_C_COMPILER "${EMSCRIPTEN_PREFIX}/emcc${EMCC_SUFFIX}" CACHE FILEPATH "C compiler" FORCE)
+set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}" CACHE FILEPATH "CXX compiler" FORCE)
+
 # The `CACHE PATH "bla"` *has to be* present as otherwise CMake < 3.13.0 would
 # for some reason forget the path to `ar`, calling it as `"" qc bla`, failing
 # with `/bin/sh: : command not found`. This is probably related to CMP0077 in
