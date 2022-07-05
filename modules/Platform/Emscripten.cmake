@@ -13,8 +13,9 @@ set(_EMSCRIPTEN_INCLUDED 1)
 # Set a global EMSCRIPTEN variable that can be used in client CMakeLists.txt to
 # detect when building using Emscripten. The go-to way when using Corrade is
 # to check CORRADE_TARGET_* variables, this is mainly to support 3rd party
-# projects.
-set(EMSCRIPTEN 1 CACHE BOOL "If true, we are targeting Emscripten output." FORCE)
+# projects. It's set as INTERNAL to not be exposed through cmake-gui or ccmake
+# which suggests it could be switched off.
+set(EMSCRIPTEN ON CACHE INTERNAL "If true, we are targeting Emscripten output.")
 
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
