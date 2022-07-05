@@ -58,9 +58,7 @@ set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}" CACHE FILEPATH 
 # The `CACHE PATH "bla"` *has to be* present as otherwise CMake < 3.13.0 would
 # for some reason forget the path to `ar`, calling it as `"" qc bla`, failing
 # with `/bin/sh: : command not found`. This is probably related to CMP0077 in
-# some way but I didn't bother investigating further. It apparently doesn't
-# need to be set for the CMAKE_<LANG>_COMPILER_{AR,RANLIB} but playing it safe
-# and doing it everywhere.
+# some way but I didn't bother investigating further.
 set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
 set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
 
