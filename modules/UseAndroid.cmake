@@ -34,13 +34,14 @@ else()
     set(ANDROID_APKSIGNER_KEY --ks $ENV{HOME}/.android/debug.keystore --ks-pass pass:android CACHE STRING "")
 endif()
 
-# Path to Android SDK. The build-tools/ subdirectory must exist.
+# Path to Android SDK. The tools/source.properties file is expected to exist to
+# avoid accidentally matching some arbitrary other directory.
 if(NOT ANDROID_SDK)
     # On Arch it's /opt/android-sdk and /opt/android-ndk
-    if(EXISTS ${CMAKE_ANDROID_NDK}/../android-sdk/build-tools)
+    if(EXISTS ${CMAKE_ANDROID_NDK}/../android-sdk/tools/source.properties)
         get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../android-sdk/ REALPATH CACHE)
     # On CircleCI it's /opt/android/sdk/ndk/<VERSION>
-    elseif(EXISTS ${CMAKE_ANDROID_NDK}/../../build-tools)
+    elseif(EXISTS ${CMAKE_ANDROID_NDK}/../../tools/source.properties)
         get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../../ REALPATH CACHE)
     # Otherwise no idea
     endif()
@@ -55,6 +56,9 @@ endif()
 # Build tools version to use. Picks the newest version.
 if(NOT ANDROID_BUILD_TOOLS_VERSION)
     file(GLOB _ANDROID_BUILD_TOOLS_FOR_VERSION RELATIVE ${ANDROID_SDK}/build-tools/ ${ANDROID_SDK}/build-tools/*.*.*)
+    if(NOT _ANDROID_BUILD_TOOLS_FOR_VERSION)
+        message(FATAL_ERROR "No Android build tools found in ${ANDROID_SDK}/build-tools")
+    endif()
     list(GET _ANDROID_BUILD_TOOLS_FOR_VERSION -1 ANDROID_BUILD_TOOLS_VERSION)
     set(ANDROID_BUILD_TOOLS_VERSION ${ANDROID_BUILD_TOOLS_VERSION} CACHE STRING "")
     if(ANDROID_BUILD_TOOLS_VERSION)
