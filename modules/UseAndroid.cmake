@@ -37,8 +37,11 @@ endif()
 # Path to Android SDK. The tools/source.properties file is expected to exist to
 # avoid accidentally matching some arbitrary other directory.
 if(NOT ANDROID_SDK)
+    # Use the env var, if present
+    if(DEFINED ENV{ANDROID_SDK_ROOT})
+        set(ANDROID_SDK $ENV{ANDROID_SDK_ROOT})
     # On Arch it's /opt/android-sdk and /opt/android-ndk
-    if(EXISTS ${CMAKE_ANDROID_NDK}/../android-sdk/tools/source.properties)
+    elseif(EXISTS ${CMAKE_ANDROID_NDK}/../android-sdk/tools/source.properties)
         get_filename_component(ANDROID_SDK ${CMAKE_ANDROID_NDK}/../android-sdk/ REALPATH CACHE)
     # On CircleCI it's /opt/android/sdk/ndk/<VERSION>
     elseif(EXISTS ${CMAKE_ANDROID_NDK}/../../tools/source.properties)
