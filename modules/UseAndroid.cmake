@@ -84,6 +84,11 @@ if(NOT ANDROID_PLATFORM_VERSION)
 endif()
 
 function(android_create_apk target manifest)
+    set(jar ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar)
+    if(NOT EXISTS ${jar})
+        message(SEND_ERROR "Android platform JAR not found at ${jar}")
+    endif()
+
     set(tools_root ${ANDROID_SDK}/build-tools/${ANDROID_BUILD_TOOLS_VERSION})
     set(apk_root ${CMAKE_CURRENT_BINARY_DIR}/${target}-apk)
     # TODO: can't use $<TARGET_FILE_NAME:target> here because of
