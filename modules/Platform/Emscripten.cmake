@@ -22,9 +22,11 @@ set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
-# Prefixes/suffixes for finding libraries
-set(CMAKE_FIND_LIBRARY_PREFIXES "")
-set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc")
+# Prefixes/suffixes for finding libraries. Magnum's own Emscripten toolchain
+# uses Foo.bc, but external toolchains (such as libraries built with vcpkg) use
+# the classical libFoo.a, so check for both.
+set(CMAKE_FIND_LIBRARY_PREFIXES ";lib")
+set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc;.a")
 
 # Disable annoying warning about absolute includes
 string(APPEND CMAKE_CXX_FLAGS " -Wno-warn-absolute-paths")
