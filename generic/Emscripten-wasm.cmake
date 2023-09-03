@@ -42,8 +42,6 @@ if(NOT EMSCRIPTEN_PREFIX)
     endif()
 endif()
 
-set(EMSCRIPTEN_TOOLCHAIN_PATH "${EMSCRIPTEN_PREFIX}/system")
-
 if(CMAKE_HOST_WIN32)
     set(EMCC_SUFFIX ".bat")
 else()
@@ -62,9 +60,63 @@ set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}" CACHE FILEPATH 
 set(CMAKE_AR "${EMSCRIPTEN_PREFIX}/emar${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ar")
 set(CMAKE_RANLIB "${EMSCRIPTEN_PREFIX}/emranlib${EMCC_SUFFIX}" CACHE PATH "Path to Emscripten ranlib")
 
+# Fetch Emscripten version, needed for the below setup. Taken from
+# https://github.com/emscripten-core/emscripten/blob/74d6a15644e7f6e76ed6a1da9c6937b5cb7aef6e/cmake/Modules/Platform/Emscripten.cmake#L152
+execute_process(COMMAND ${CMAKE_C_COMPILER} -v
+    RESULT_VARIABLE _EMSCRIPTEN_VERSION_RESULT
+    ERROR_VARIABLE EMSCRIPTEN_VERSION
+    OUTPUT_QUIET)
+if(NOT _EMSCRIPTEN_VERSION_RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to query Emscripten version with the following output:\n${EMSCRIPTEN_VERSION}")
+endif()
+string(REGEX MATCH "emcc \\([^)]+\\) ([0-9\\.]+)" "\\1" "${EMSCRIPTEN_VERSION}")
+if(NOT CMAKE_MATCH_1)
+    message(FATAL_ERROR "Failed to extract Emscripten version from the following:\n${EMSCRIPTEN_VERSION}")
+endif()
+set(EMSCRIPTEN_VERSION ${CMAKE_MATCH_1})
+
+# As of Emscripten 2.0.13, the whole include dir is copied over to the
+# Emscripten cache dir in an attempt to have includes next to the libraries
+# that were always built on-the-fly directly into the cache, such as libGL etc.
+# See https://github.com/emscripten-core/emscripten/issues/9353 for the
+# original discussion. Since 3.1.4, the cache dir is then the *only* sysroot
+# that is complete, as it contains a generated version.h:
+# https://github.com/emscripten-core/emscripten/pull/16147; and since 3.1.9
+# it's not possible to use the system directory anymore:
+# https://github.com/emscripten-core/emscripten/pull/16715.
+#
+# The inevitable consequence is that includes updated in the system path aren't
+# automatically picked up, but only after explicitly copying the files to the
+# cache dir with `embuilder build sysroot --force`. See
+# https://github.com/emscripten-core/emscripten/pull/13090 for related
+# discussion.
+#
+# The code in https://github.com/emscripten-core/emscripten/blob/0566a76b500bd2bbd535e108f657fce1db7f6f75/tools/system_libs.py#L2298-L2345
+# however DOES NOT copy any binaries from lib/, only the include files, so
+# <prefix>/system/lib still has to be added to CMAKE_FIND_ROOT_PATH. Yay for
+# the "single sysroot" attempt, FFS.
+#
+# The cache dir can be queried by asking em-config. Taken from
+# https://github.com/emscripten-core/emscripten/blob/74d6a15644e7f6e76ed6a1da9c6937b5cb7aef6e/cmake/Modules/Platform/Emscripten.cmake#L223
+if(NOT EMSCRIPTEN_VERSION VERSION_LESS 2.0.13)
+    execute_process(COMMAND ${EMSCRIPTEN_PREFIX}/em-config${EMCC_SUFFIX} CACHE
+        RESULT_VARIABLE _EMSCRIPTEN_CACHE_RESULT
+        OUTPUT_VARIABLE _EMSCRIPTEN_CACHE
+        ERROR_VARIABLE _EMSCRIPTEN_CACHE_ERROR
+        OUTPUT_STRIP_TRAILING_WHITESPACE)
+    if(NOT _EMSCRIPTEN_CACHE_RESULT EQUAL 0)
+        message(FATAL_ERROR "Failed to query Emscripten cache directory with the following output:\n${_EMSCRIPTEN_CACHE_ERROR}")
+    endif()
+    set(EMSCRIPTEN_SYSROOTS
+        "${_EMSCRIPTEN_CACHE}/sysroot"
+        "${EMSCRIPTEN_PREFIX}/system")
+else()
+    set(EMSCRIPTEN_SYSROOTS "${EMSCRIPTEN_PREFIX}/system")
+endif()
+
 set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
-    "${EMSCRIPTEN_TOOLCHAIN_PATH}"
-    "${EMSCRIPTEN_PREFIX}")
+    ${EMSCRIPTEN_SYSROOTS}
+    ${EMSCRIPTEN_PREFIX})
 
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
