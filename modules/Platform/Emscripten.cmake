@@ -17,6 +17,12 @@ set(_EMSCRIPTEN_INCLUDED 1)
 # which suggests it could be switched off.
 set(EMSCRIPTEN ON CACHE INTERNAL "If true, we are targeting Emscripten output.")
 
+# Make sure user-specified EMSCRIPTEN_PREFIX is propagated to try_compile()
+# that's executed by CMakeTestCCompiler.cmake inside a project() call. Without
+# that, the toolchain may fail to find the prefix even though EMSCRIPTEN_PREFIX
+# is properly set in the outer scope.
+set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES EMSCRIPTEN_PREFIX)
+
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
 set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
