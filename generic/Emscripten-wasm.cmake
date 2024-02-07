@@ -73,7 +73,10 @@ set(CMAKE_CXX_COMPILER_RANLIB "${CMAKE_RANLIB}")
 execute_process(COMMAND ${CMAKE_C_COMPILER} -v
     RESULT_VARIABLE _EMSCRIPTEN_VERSION_RESULT
     ERROR_VARIABLE EMSCRIPTEN_VERSION
-    OUTPUT_QUIET)
+    # The command should only print to the error output if it succeeds. If it
+    # fails, we may want to know what's the standard output as well, so put
+    # both to the same variable.
+    OUTPUT_VARIABLE EMSCRIPTEN_VERSION)
 if(NOT _EMSCRIPTEN_VERSION_RESULT EQUAL 0)
     message(FATAL_ERROR "Failed to query Emscripten version with the following output:\n${EMSCRIPTEN_VERSION}")
 endif()
