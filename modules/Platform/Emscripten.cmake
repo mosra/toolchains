@@ -25,13 +25,21 @@ set(CMAKE_TRY_COMPILE_PLATFORM_VARIABLES EMSCRIPTEN_PREFIX)
 
 # Prefixes/suffixes for building
 set(CMAKE_STATIC_LIBRARY_PREFIX "")
-set(CMAKE_STATIC_LIBRARY_SUFFIX ".bc")
+# This used to be *.bc, but as of 3.1.52 the *.bc extension is recognized as
+# something different, resulting in
+#   lib.bc:1:2: error: expected integer
+#       1 | !<arch>
+#         |  ^
+# https://github.com/emscripten-core/emscripten/issues/21128
+set(CMAKE_STATIC_LIBRARY_SUFFIX ".a")
 set(CMAKE_EXECUTABLE_SUFFIX ".js")
 
 # Prefixes/suffixes for finding libraries. Magnum's own Emscripten toolchain
 # uses Foo.bc, but external toolchains (such as libraries built with vcpkg) use
 # the classical libFoo.a, so check for both.
 set(CMAKE_FIND_LIBRARY_PREFIXES ";lib")
+# Still recognizing the `*.bc` suffixes for backwards compatibility, but note
+# that 3.1.52+ will fail to use such files.
 set(CMAKE_FIND_LIBRARY_SUFFIXES ".bc;.a")
 
 # Disable annoying warning about absolute includes
