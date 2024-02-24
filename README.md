@@ -1,30 +1,50 @@
-This repository contains toolchains usable for crosscompiling with CMake. They
-are meant to be used on ArchLinux, but they can also (with some directory
-structure modifications) work on other systems.
+This repository contains toolchains usable for crosscompiling with CMake.
+They're tailored for and mainly used by [Magnum](https://github.com/mosra/magnum)
+but should work for other projects as well.
 
-How to use them?
-================
+USAGE
+=====
 
-Suppose you have sources which use CMake build system. Create new clean build
-directory, pick any toolchain and run cmake with your selected toolchain in it,
-e.g.:
+Assuming a CMake project, point `CMAKE_TOOLCHAIN_FILE` to one of the toolchain
+files during the initial CMake invocation. While relative paths may work in
+certain cases, it's better to always pass an absolute path. The
+`CMAKE_TOOLCHAIN_FILE` variable is only used by CMake during the initial run,
+it's ignored (and thus doesn't even need to be specified) in subsequent runs.
 
-    mkdir build-win
-    cd build-win
-    cmake -DCMAKE_TOOLCHAIN_FILE=~/toolchains/archlinux/Qt4-mingw32.cmake ..
+    mkdir build-emscripten && cd build-emscripten
+    cmake .. -DCMAKE_TOOLCHAIN_FILE=path/to/toolchains/generic/Emscripten-wasm.cmake
 
-Now you can compile (and install/package) the application as usual:
+The toolchain file then sets up other paths (such as pointing
+`CMAKE_MODULE_PATH` to the `modules/Platform/` directory) and the process will
+result in a configured build directory that can be subsequently used as any
+other. See comments in particular toolchain files for platform-specific
+details.
 
-    make -j3
-    make package
-    make me happy
+CONTACT & SUPPORT
+=================
 
-The result is application crosscompiled for given architecture and system (here
-it is Qt4 application for Windows).
+This project is maintained as part of Magnum, so it shares the same suppport
+channels:
 
-Dependencies for crosscompiling
-===============================
+-   Project homepage — https://magnum.graphics/
+-   Documentation — https://doc.magnum.graphics/
+-   GitHub — https://github.com/mosra/toolchains and the
+    [#magnum](https://github.com/topics/magnum) topic
+-   GitLab — https://gitlab.com/mosra/toolchains
+-   Gitter community chat — https://gitter.im/mosra/magnum
+-   E-mail — info@magnum.graphics
+-   Google Groups mailing list — magnum-engine@googlegroups.com
+    ([archive](https://groups.google.com/forum/#!forum/magnum-engine))
+-   Twitter — https://twitter.com/czmosra and the
+    [#MagnumEngine](https://twitter.com/hashtag/MagnumEngine) hashtag
 
-Every toolchain file has listed dependecies, which are needed for successful
-crosscompilation. Packages are available either in official ArchLinux
-repositories, in AUR or, for more exotic architectures, in [my own repository](http://github.com/mosra/archlinux).
+See also the Magnum Project [Contact & Support page](https://magnum.graphics/contact/)
+for further information.
+
+LICENSE
+=======
+
+While Magnum itself and its documentation are licensed under the MIT/Expat
+license, the toolchains are put into public domain (or UNLICENSE) to free you
+from any legal obstacles when using these to build your apps. See the
+[COPYING](COPYING) file for details.
