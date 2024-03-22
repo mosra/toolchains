@@ -84,7 +84,7 @@ if(NOT ANDROID_PLATFORM_VERSION)
 endif()
 
 function(android_create_apk target manifest)
-    cmake_parse_arguments(CREATE_APK "" "RESOURCE_DIRECTORY" "" ${ARGN})
+    cmake_parse_arguments(CREATE_APK "" "RESOURCE_DIRECTORY;ASSET_DIRECTORY" "" ${ARGN})
     if(CREATE_APK_UNPARSED_ARGUMENTS)
         string (REPLACE ";" " " CREATE_APK_UNPARSED_ARGUMENTS "${CREATE_APK_UNPARSED_ARGUMENTS}")
         message(SEND_ERROR "Unrecognized android_create_apk() arguments: ${CREATE_APK_UNPARSED_ARGUMENTS}")
@@ -142,6 +142,23 @@ function(android_create_apk target manifest)
         list(APPEND resource_files ${CMAKE_CURRENT_BINARY_DIR}/${target}-resource-dependencies.txt)
     endif()
 
+    # Pass a path to the asset directory, if specified, and track the
+    # dependencies. Logic the same as in the CREATE_APK_RESOURCE_DIRECTORY
+    # above.
+    if(CREATE_APK_ASSET_DIRECTORY)
+        get_filename_component(asset_directory_absolute ${CREATE_APK_ASSET_DIRECTORY} REALPATH)
+        set(assets -A ${asset_directory_absolute})
+
+        if(NOT CMAKE_VERSION VERSION_LESS 3.12)
+            set(glob_configure_depends CONFIGURE_DEPENDS)
+        endif()
+        file(GLOB_RECURSE asset_files ${glob_configure_depends} ${asset_directory_absolute}/*)
+
+        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${target}-asset-dependencies.txt.orig ${resource_files})
+        configure_file(${CMAKE_CURRENT_BINARY_DIR}/${target}-asset-dependencies.txt.orig ${CMAKE_CURRENT_BINARY_DIR}/${target}-asset-dependencies.txt COPYONLY)
+        list(APPEND asset_files ${CMAKE_CURRENT_BINARY_DIR}/${target}-asset-dependencies.txt)
+    endif()
+
     # Package this file together with the manifest
     # TODO: is there some possibility to set the zip compression ~~speed~~
     #   draaaag? it's slow!
@@ -154,11 +171,12 @@ function(android_create_apk target manifest)
         COMMAND ${tools_root}/aapt package -f
             -M ${manifest_absolute}
             ${resources} # present only if RESOURCE_DIRECTORY was specified
+            ${assets} # present only if ASSET_DIRECTORY was specified
             -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar
             -F ${unaligned_apk}
             ${apk_root}/bin
         COMMENT "Packaging ${target}-unaligned.apk"
-        DEPENDS ${library_destination} ${manifest} ${resource_files})
+        DEPENDS ${library_destination} ${manifest} ${resource_files} ${asset_files})
 
     # Align the APK
     add_custom_command(OUTPUT ${unsigned_apk}
