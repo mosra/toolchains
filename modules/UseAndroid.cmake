@@ -84,6 +84,12 @@ if(NOT ANDROID_PLATFORM_VERSION)
 endif()
 
 function(android_create_apk target manifest)
+    cmake_parse_arguments(CREATE_APK "" "RESOURCE_DIRECTORY" "" ${ARGN})
+    if(CREATE_APK_UNPARSED_ARGUMENTS)
+        string (REPLACE ";" " " CREATE_APK_UNPARSED_ARGUMENTS "${CREATE_APK_UNPARSED_ARGUMENTS}")
+        message(SEND_ERROR "Unrecognized android_create_apk() arguments: ${CREATE_APK_UNPARSED_ARGUMENTS}")
+    endif()
+
     set(jar ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar)
     if(NOT EXISTS ${jar})
         message(SEND_ERROR "Android platform JAR not found at ${jar}")
@@ -110,6 +116,32 @@ function(android_create_apk target manifest)
         COMMENT "Copying stripped ${target} for an APK build"
         DEPENDS $<TARGET_FILE:${target}>)
 
+    # Pass a path to the resource directory, if specified, and track the
+    # dependencies
+    if(CREATE_APK_RESOURCE_DIRECTORY)
+        get_filename_component(resource_directory_absolute ${CREATE_APK_RESOURCE_DIRECTORY} REALPATH)
+        set(resources -S ${resource_directory_absolute})
+
+        # Glob all resource files in given directory to properly repack the APK
+        # when they change. Additionally, on CMake 3.12+ make sure the
+        # directory is globbed again on every build to ensure newly appearing
+        # files are properly picked up.
+        if(NOT CMAKE_VERSION VERSION_LESS 3.12)
+            set(glob_configure_depends CONFIGURE_DEPENDS)
+        endif()
+        file(GLOB_RECURSE resource_files ${glob_configure_depends} ${resource_directory_absolute}/*)
+
+        # On the other hand, if a file gets removed from the directory, or a
+        # file with an old timestamp gets added, it won't trigger a repack. To
+        # fix that, record also the list of actual globbed files and track it
+        # as another dependency. To avoid a repack on every CMake run, (ab)use
+        # configure_file() to write it with a changed timestamp only if the
+        # list actually changes.
+        file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/${target}-resource-dependencies.txt.orig ${resource_files})
+        configure_file(${CMAKE_CURRENT_BINARY_DIR}/${target}-resource-dependencies.txt.orig ${CMAKE_CURRENT_BINARY_DIR}/${target}-resource-dependencies.txt COPYONLY)
+        list(APPEND resource_files ${CMAKE_CURRENT_BINARY_DIR}/${target}-resource-dependencies.txt)
+    endif()
+
     # Package this file together with the manifest
     # TODO: is there some possibility to set the zip compression ~~speed~~
     #   draaaag? it's slow!
@@ -119,11 +151,14 @@ function(android_create_apk target manifest)
     # TODO: for resources i need to add -m -J src/
     get_filename_component(manifest_absolute ${manifest} REALPATH)
     add_custom_command(OUTPUT ${unaligned_apk}
-        COMMAND ${tools_root}/aapt package -f -M ${manifest_absolute} -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar -F ${unaligned_apk} ${apk_root}/bin
+        COMMAND ${tools_root}/aapt package -f
+            -M ${manifest_absolute}
+            ${resources} # present only if RESOURCE_DIRECTORY was specified
+            -I ${ANDROID_SDK}/platforms/android-${ANDROID_PLATFORM_VERSION}/android.jar
+            -F ${unaligned_apk}
+            ${apk_root}/bin
         COMMENT "Packaging ${target}-unaligned.apk"
-        DEPENDS ${library_destination} ${manifest})
-
-    # TODO: compiling resources like icons etc.
+        DEPENDS ${library_destination} ${manifest} ${resource_files})
 
     # Align the APK
     add_custom_command(OUTPUT ${unsigned_apk}
