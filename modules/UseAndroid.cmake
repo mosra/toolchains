@@ -1,6 +1,8 @@
 # - Android tools for CMake
 #
-#   android_create_apk(target manifest)
+#   android_create_apk(<target> <manifest>
+#       [RESOURCE_DIRECTORY <res>]
+#       [ASSET_DIRECTORY <assets>])
 #
 # The script should autodetect the `ANDROID_SDK`, `ANDROID_BUILD_TOOLS_VERSION`,
 # `ANDROID_PLATFORM_VERSION` variables and print them to the configure output.
@@ -11,6 +13,13 @@
 # location and password. Here I just took the default debug.keystore that
 # Gradle generated on my system and guesstimated its password to be "android".
 #
+# You can pass a path to a directory with resources using `RESOURCE_DIRECTORY`,
+# which will then get copied to the APK. Similarly, a directory with assets can
+# be specified with `ASSET_DIRECTORY`. Both options track file dependencies, so
+# the APK gets repacked when any files in the directories change contents, are
+# added or removed. CMake before 3.12 checks the directories only during CMake
+# runs, on newer versions at every incremental build.
+#
 # The function also creates a new target ${target}-deploy which you can use to
 # install the APK directly from the IDE / command-line.
 #
@@ -19,8 +28,6 @@
 # - It's packaging just one ABI, the one you are currently building with CMake.
 #   It might be possible to work around this somehow in the future, but so far
 #   it's like this.
-# - No resources are packed or compiled, it's wrapping just a single *.so in
-#   the APK.
 # - There is lots of autodetection that can go wrong.
 #
 
