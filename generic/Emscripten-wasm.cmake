@@ -147,3 +147,30 @@ cmake_minimum_required(VERSION 3.7)
 set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=1")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG -O3 -flto")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT "-O3 -flto")
+
+# Look for Node.js. Ïf found, use it as the crosscompiling emulator. You can
+# disable this behavior by defining CMAKE_CROSSCOMPILING_EMULATOR to empty.
+if(NOT DEFINED CMAKE_CROSSCOMPILING_EMULATOR)
+    # Not using find_package(NodeJs) as that'd mean I'd have to bundle
+    # FindNodeJs. Additionally, I cannot use NodeJs::NodeJs here -- while
+    # CORRADE_CROSSCOMPILING_EMULATOR set to NodeJs::NodeJs seems to work for
+    # add_test(), it doesn't get expanded to the actual executable location for
+    # the custom command in corrade_add_resource(), for example. So there's no
+    # point in using FindNodeJs at all, simply just find_program() and reuse
+    # the same variable so it doesn't try to find the same thing again in the
+    # actual FindNodeJs.
+    #
+    # Also note that by creating the NodeJs::NodeJs target this early if
+    # find_package(NodeJs) would be used, it makes it behave like it's not
+    # project-local. A consequence of that is that if NodeJs::NodeJs is used
+    # again as a COMMAND in add_test(), it *doesn't* get prepended with
+    # CMAKE_CROSSCOMPILING_EMULATOR, whereas if the NodeJs::NodeJs target isn't
+    # created here already, CMAKE_CROSSCOMPILING_EMULATOR gets prepended to
+    # add_test(), leading to nodejs being twice in the command. See
+    # https://github.com/mosra/corrade/issues/185 for more details.
+    find_program(NODEJS_EXECUTABLE node)
+    mark_as_advanced(NODEJS_EXECUTABLE)
+    if(NODEJS_EXECUTABLE)
+        set(CMAKE_CROSSCOMPILING_EMULATOR ${NODEJS_EXECUTABLE} CACHE FILEPATH "Path to the emulator for the target system.")
+    endif()
+endif()
