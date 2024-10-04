@@ -54,6 +54,11 @@ endif()
 # https://devblogs.microsoft.com/cppblog/configure-intellisense-with-cmake-toolchain-files-in-visual-studio-2019-16-9-preview-2/
 set(CMAKE_C_COMPILER "${EMSCRIPTEN_PREFIX}/emcc${EMCC_SUFFIX}" CACHE FILEPATH "C compiler" FORCE)
 set(CMAKE_CXX_COMPILER "${EMSCRIPTEN_PREFIX}/em++${EMCC_SUFFIX}" CACHE FILEPATH "CXX compiler" FORCE)
+# These variables are usually hidden in the Advanced section by default, but if
+# given language isn't enabled for the project, there wouldn't be a pre-
+# existing (advanced) CMAKE_<LANG>_COMPILER variable and so it'd show up in the
+# default view.
+mark_as_advanced(CMAKE_C_COMPILER CMAKE_CXX_COMPILER)
 
 # The `CACHE PATH "bla"` *has to be* present as otherwise CMake < 3.13.0 would
 # for some reason forget the path to `ar`, calling it as `"" qc bla`, failing
@@ -172,5 +177,6 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING_EMULATOR)
     mark_as_advanced(NODEJS_EXECUTABLE)
     if(NODEJS_EXECUTABLE)
         set(CMAKE_CROSSCOMPILING_EMULATOR ${NODEJS_EXECUTABLE} CACHE FILEPATH "Path to the emulator for the target system.")
+        mark_as_advanced(CMAKE_CROSSCOMPILING_EMULATOR)
     endif()
 endif()
