@@ -176,7 +176,31 @@ if(NOT DEFINED CMAKE_CROSSCOMPILING_EMULATOR)
     find_program(NODEJS_EXECUTABLE node)
     mark_as_advanced(NODEJS_EXECUTABLE)
     if(NODEJS_EXECUTABLE)
-        set(CMAKE_CROSSCOMPILING_EMULATOR ${NODEJS_EXECUTABLE} CACHE FILEPATH "Path to the emulator for the target system.")
+        # This is a verbatim copy from FindNodeJs.cmake, see above for why is
+        # find_package(NodeJs) not called directly
+        execute_process(COMMAND ${NODEJS_EXECUTABLE} --version
+            OUTPUT_VARIABLE NodeJs_VERSION
+            ERROR_QUIET OUTPUT_STRIP_TRAILING_WHITESPACE)
+        if(NodeJs_VERSION MATCHES "^v[0-9]")
+            string(SUBSTRING ${NodeJs_VERSION} 1 -1 NodeJs_VERSION)
+        else()
+            unset(NodeJs_VERSION)
+        endif()
+
+        # Node.js 18 doesn't work with Emscripten before 3.1.13 unless the
+        # fetch functionality is disabled.
+        #   https://github.com/emscripten-core/emscripten/pull/16917
+        #   https://github.com/emscripten-core/emscripten/issues/16915
+        #   https://cmake.org/cmake/help/latest/variable/CMAKE_CROSSCOMPILING_EMULATOR.html
+        if(NodeJs_VERSION VERSION_GREATER_EQUAL 18.1.0 AND EMSCRIPTEN_VERSION VERSION_LESS 3.1.13)
+            if(CMAKE_VERSION VERSION_LESS 3.15)
+                message(FATAL_ERROR "In order to use Node.js 18 as a CMAKE_CROSSCOMPILING_EMULATOR with Emscripten older than 3.1.13, an extra flag needs to be passed, which requires CMake 3.15+. Use different versions or explicitly set CMAKE_CROSSCOMPILING_EMULATOR to empty to prevent it from being used.")
+            endif()
+            set(CMAKE_CROSSCOMPILING_EMULATOR "${NODEJS_EXECUTABLE};--no-experimental-fetch" CACHE FILEPATH "Path to the emulator for the target system.")
+        else()
+            set(CMAKE_CROSSCOMPILING_EMULATOR ${NODEJS_EXECUTABLE} CACHE FILEPATH "Path to the emulator for the target system.")
+        endif()
+
         mark_as_advanced(CMAKE_CROSSCOMPILING_EMULATOR)
     endif()
 endif()
