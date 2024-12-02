@@ -147,8 +147,9 @@ set(CMAKE_SYSTEM_PREFIX_PATH ${CMAKE_FIND_ROOT_PATH})
 
 # Compared to the classic (asm.js) compilation, -s WASM=1 is added to both
 # compiler and linker. The *_INIT variables are available since CMake 3.7, so
-# it won't work in earlier versions. Sorry.
-cmake_minimum_required(VERSION 3.7)
+# it won't work in earlier versions. Sorry. CMake 3.31+ warns if anything older
+# than 3.10 is used, so it's used as the policy max version.
+cmake_minimum_required(VERSION 3.7...3.10)
 set(CMAKE_EXE_LINKER_FLAGS_INIT "-s WASM=1")
 set(CMAKE_CXX_FLAGS_RELEASE_INIT "-DNDEBUG -O3 -flto")
 set(CMAKE_EXE_LINKER_FLAGS_RELEASE_INIT "-O3 -flto")
