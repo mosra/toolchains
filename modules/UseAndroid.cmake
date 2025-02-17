@@ -31,7 +31,9 @@
 # - There is lots of autodetection that can go wrong.
 #
 
-cmake_minimum_required(VERSION 3.7) # Android support is since 3.7
+# Android support is since 3.7. 3.10 matches Corrade requirement, see its root
+# CMakeLists for more information.
+cmake_minimum_required(VERSION 3.7...3.10)
 
 # Override this to point to your debug.keystore location (and specify a
 # password)
