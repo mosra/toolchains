@@ -21,7 +21,7 @@ set(CMAKE_FIND_ROOT_PATH ${CMAKE_FIND_ROOT_PATH}
 # This helps find_path(), otherwise it's not able to find e.g.
 # /usr/x86_64-w64-mingw32/share/cmake/Corrade/. I don't know why it's needed when
 # there is already CMAKE_FIND_ROOT_PATH, but probably related to
-# http://public.kitware.com/Bug/view.php?id=14337
+# https://public.kitware.com/Bug/view.php?id=14337
 set(CMAKE_PREFIX_PATH /usr/x86_64-w64-mingw32)
 
 # Find executables in root path, libraries and includes are in crosscompiler
