@@ -45,7 +45,14 @@ if(NOT EMSCRIPTEN_PREFIX)
 endif()
 
 if(CMAKE_HOST_WIN32)
-    set(EMCC_SUFFIX ".bat")
+    # Emscripten 6.0 replaced all *.bat files with *.exe, check for those first
+    # and then fall back if they're not found.
+    #   https://github.com/emscripten-core/emscripten/releases/tag/6.0.0
+    if(EXISTS "${EMSCRIPTEN_PREFIX}/emcc.exe")
+        set(EMCC_SUFFIX ".exe")
+    else()
+        set(EMCC_SUFFIX ".bat")
+    endif()
 else()
     set(EMCC_SUFFIX "")
 endif()
